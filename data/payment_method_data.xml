@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="payment_method_localbankcards" model="payment.method">
+        <field name="name">Local Bank Cards</field>
+        <field name="code">localbankcards</field>
+        <field name="sequence">1</field>
+        <field name="image" type="base64" file="payment_plutu/static/img/moamalat.png" />
+        <field name="support_tokenization">False</field>
+        <field name="support_express_checkout">False</field>
+        <field name="support_refund">partial</field>
+        <field name="active">True</field>
+    </record>
+    <record id="payment_method_tlync" model="payment.method">
+        <field name="name">T-Lync Service</field>
+        <field name="code">tlync</field>
+        <field name="sequence">2</field>
+        <field name="image" type="base64" file="payment_plutu/static/img/tlync.png" />
+        <field name="support_tokenization">False</field>
+        <field name="support_express_checkout">False</field>
+        <field name="support_refund">partial</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

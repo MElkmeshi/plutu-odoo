@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">Paylink Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form" />
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position='inside'>
+                <group invisible="code != 'plutu'">
+                    <group>
+
+                        <field name="plutu_secret_key" />
+                        <field name="plutu_api_key" />
+                        <field name="plutu_access_token" />
+                    </group>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_toggle_is_published"
+                            invisible="not is_published"
+                            class="oe_stat_button"
+                            type="object"
+                            icon="fa-globe">
+                            <div class="o_stat_info o_field_widget">
+                                <span class="o_stat_text text-success">Published</span>
+                            </div>
+                        </button>
+                        <button name="action_toggle_is_published"
+                            invisible="is_published"
+                            class="oe_stat_button"
+                            type="object"
+                            icon="fa-eye-slash">
+                            <div class="o_stat_info o_field_widget">
+                                <span class="o_stat_text text-danger">Unpublished</span>
+                            </div>
+                        </button>
+                    </div>
+                </group>
+            </group>
+            <xpath expr="//field[@name='maximum_amount']" position="before">
+                <field name="minimum_amount" />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

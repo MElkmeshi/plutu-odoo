@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Payment Provider Definition -->
+    <record id="payment_payment_provider_plutu" model="payment.provider">
+        <field name="name">Plutu</field>
+        <field name="code">plutu</field>
+        <field name="is_published">True</field>
+        <field name="redirect_form_view_id" ref="redirect_form" />
+        <field name="allow_tokenization">True</field>
+        <field name="allow_express_checkout">True</field>
+        <field name="plutu_api_key">APP_ID_123456789</field>
+        <field name="plutu_access_token">ACCESS_TOKEN_987654321</field>
+        <field name="plutu_secret_key">0662abb5-13c7-38ab-cd12-236e58f43766</field>
+        <field name="website_id" ref="website.default_website" />
+        <field name="image_128" type="base64" file="payment_plutu/static/description/icon.png" />
+        <field name="state">test</field>
+        <field name="payment_method_ids"
+            eval="[Command.set([
+                         ref('payment_plutu.payment_method_localbankcards'),
+                         ref('payment_plutu.payment_method_tlync'),
+                     ])]"
+        />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+</odoo>
