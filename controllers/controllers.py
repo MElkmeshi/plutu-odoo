@@ -25,7 +25,7 @@ class PaylinkController(http.Controller):
     @http.route(_return_url, type='http', methods=['GET'], auth='public')
     def plutu_return_from_payment(self, **data):
         """ Process the notification data sent by Plutu after payment. """
-        plutu_secret_key = request.env['payment.provider'].search([('code','=','plutu')]).plutu_secret_key
+        plutu_secret_key = request.env['payment.provider'].sudo().search([('code','=','plutu')]).plutu_secret_key
         _logger.info("Handling redirection from Plutu with data:\n%s", pprint.pformat(data))
 
         self._verify_plutu_callback_hash(data, plutu_secret_key)
@@ -42,7 +42,7 @@ class PaylinkController(http.Controller):
         """
         data = request.get_json_data()
         _logger.info("Notification received from Paylink with data:\n%s", pprint.pformat(data))
-        plutu_secret_key = request.env['payment.provider'].search([('code','=','plutu')]).plutu_secret_key
+        plutu_secret_key = request.env['payment.provider'].sudo().search([('code','=','plutu')]).plutu_secret_key
         self._verify_plutu_callback_hash(data, plutu_secret_key,'callback')
         tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
             'plutu', data
