@@ -38,13 +38,13 @@ class PaymentTransaction(models.Model):
             return res
         
         _logger.info("Payment Method Name: %s", self.payment_method_id.name)
-        base_url = 'http://localhost:8069'
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         payload = {
                 'amount': str(self.amount),
                 'invoice_no': self.reference,
                 'return_url': base_url + '/payment/plutu/return',
-                'mobile_number': '0910441322',
-                'callback_url':'https://webhook.site/1530fd8a-a75a-41a5-a32a-a43230100401',
+                'mobile_number': self.partner_id.phone,
+                'callback_url': base_url + '/payment/plutu/webhook',
                 'lang': 'en'
             }
         payment_link_data = self.provider_id._plutu_make_request(f'transaction/{self.payment_method_id.code}/confirm', payload=payload)
