@@ -9,8 +9,6 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 from odoo.addons.payment import utils as payment_utils
-from odoo.addons.payment_plutu import const
-from odoo.addons.payment_plutu.controllers.controllers import PaylinkController
 
 
 _logger = logging.getLogger(__name__)
@@ -18,7 +16,6 @@ _logger = logging.getLogger(__name__)
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
-    
     plutu_mobile_number = fields.Char(string="Mobile Number", help="Customer's mobile number for Sadad payment.")
     plutu_birth_year = fields.Char(string="Birth Year", help="Customer's birth year for Sadad payment.")
     plutu_process_id = fields.Char(string="Process ID", readonly=True, help="Process ID returned by Sadad API after sending OTP.")

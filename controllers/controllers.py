@@ -7,9 +7,7 @@ import pprint
 from werkzeug.exceptions import Forbidden
 
 from odoo import http
-from odoo.exceptions import ValidationError
 from odoo.http import request
-from odoo.addons.payment_plutu import const
 
 from werkzeug.exceptions import Forbidden
 
@@ -23,12 +21,14 @@ import hmac
 class PaylinkController(http.Controller):
     _return_url = '/payment/plutu/return'
     _webhook_url = '/payment/plutu/webhook'
+
     @http.route(_return_url, type='http', methods=['GET'], auth='public')
     def plutu_return_from_payment(self, **data):
         """ Process the notification data sent by Plutu after payment. """
+        plutu_secret_key = request.env['payment.provider'].search([('code','=','plutu')]).plutu_secret_key
         _logger.info("Handling redirection from Plutu with data:\n%s", pprint.pformat(data))
 
-        self._verify_plutu_callback_hash(data, self.plutu_secret_key)
+        self._verify_plutu_callback_hash(data, plutu_secret_key)
         tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
             'plutu', data
         )
@@ -42,7 +42,8 @@ class PaylinkController(http.Controller):
         """
         data = request.get_json_data()
         _logger.info("Notification received from Paylink with data:\n%s", pprint.pformat(data))
-        self._verify_plutu_callback_hash(data, self.plutu_secret_key,'callback')
+        plutu_secret_key = request.env['payment.provider'].search([('code','=','plutu')]).plutu_secret_key
+        self._verify_plutu_callback_hash(data, plutu_secret_key,'callback')
         tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data(
             'plutu', data
         )
